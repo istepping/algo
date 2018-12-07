@@ -1,8 +1,8 @@
 import scrapy
 
-
+##
 class DmozSpider(scrapy.Spider):
-    name = "dmoz"
+    name = "dmoz" # 取别spider
     allowed_domains = ["readthedocs.io"]
     # 为每一个url创建一个request
     start_urls=[
