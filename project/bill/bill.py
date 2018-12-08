@@ -14,6 +14,17 @@ def read_file(file):
 
 #############################
 # @author sunLei
+# @time 2018/12/8 23:39
+# @note 预测器
+#############################
+def predict(test):
+    group, label = read_file(r'data_bill.txt')
+    normal_group = knn.normalize(group)
+    return knn.classify_knn0(group, label, test, 5)
+
+
+#############################
+# @author sunLei
 # @time 2018/12/8 21:21
 # @note 特征值系数训练
 #############################
@@ -58,6 +69,7 @@ def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=10):
 
 
 if __name__ == "__main__":
-    group1, label1 = read_file(r'data_bill.txt')
-    nor_group = knn.normalize(group1)
-    weight_train(nor_group, label1, step=1, ranges=10, k=3, test_num=5)
+    print(predict([0.5, 0.34, 0.12, 60]))
+    # group1, label1 = read_file(r'data_bill.txt')
+    # nor_group = knn.normalize(group1)
+    # weight_train(nor_group, label1, step=1, ranges=10, k=3, test_num=5)
