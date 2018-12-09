@@ -19,8 +19,9 @@ def read_file(file):
 #############################
 def predict(test):
     group, label = read_file(r'data_bill.txt')
-    normal_group = knn.normalize(group)
-    return knn.classify_knn0(group, label, test, 5)
+    normal_group, min_value, max_value = knn.normalize(group)
+    normal_test = (test - min_value) / (max_value - min_value)
+    return knn.classify_knn0(normal_group, label, normal_test, 5)
 
 
 #############################
@@ -29,7 +30,6 @@ def predict(test):
 # @note 特征值系数训练
 #############################
 def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=10):
-    print(group)
     k = k  # k值
     weight = [0.1, 0.1, 0.1, 0.1]  # 系数数组
     step = step  # 步长
@@ -51,25 +51,27 @@ def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=10):
                 for D in range(ranges):
                     weight[3] = round(0.1 + D * step, 1)
                     for i in range(test_num):
-                        classify_result = knn.classify_knn0(train_data, train_label, group[i, :], k)
+                        test_data = group[i, :] * weight
+                        classify_result = knn.classify_knn0(train_data, train_label, test_data, k)
                         if classify_result == label[i]:
                             right_count += 1.0
                     ratio = right_count / float(test_num)
 
                     if ratio > max_right:
-                        print("替换")
                         max_right = ratio
                         max_right_weight[:] = weight[:]  # 赋值
-                        print(max_right_weight)
+                        print("替换")
+                        print(ratio, max_right_weight)
                     finish_num += 1.0  # 进度加一
                     right_count = 0.0  # 归位
         print("进度:%f" % (finish_num / total_num))
     print("正确率", max_right)
     print("结果", max_right_weight)
+    np.savetxt(r'max_right_weight.txt', max_right_weight)
 
 
 if __name__ == "__main__":
-    print(predict([0.5, 0.34, 0.12, 60]))
-    # group1, label1 = read_file(r'data_bill.txt')
-    # nor_group = knn.normalize(group1)
-    # weight_train(nor_group, label1, step=1, ranges=10, k=3, test_num=5)
+    print(predict(np.array([0.5, 0.34, 0.22, 80])))
+    group1, label1 = read_file(r'data_bill.txt')
+    nor_group, arg2, arg3 = knn.normalize(group1)
+    weight_train(nor_group, label1, step=0.1, ranges=10, k=5, test_num=9)

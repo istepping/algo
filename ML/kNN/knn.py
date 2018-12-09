@@ -25,4 +25,4 @@ def normalize(data_set):
     ranges = max_value - min_value
     norm_data_set = (data_set - np.tile(min_value, (data_set.shape[0], 1))) / np.tile(ranges, (data_set.shape[0], 1))
     # np.savetxt(r'normal_data.txt', norm_data_set)
-    return norm_data_set
+    return norm_data_set,min_value,max_value
