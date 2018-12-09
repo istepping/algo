@@ -71,7 +71,7 @@ def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=10):
 
 
 if __name__ == "__main__":
-    print(predict(np.array([0.5, 0.34, 0.22, 80])))
+    # print(predict(np.array([0.9, 0.34, 0.22, 310])))
     group1, label1 = read_file(r'data_bill.txt')
     nor_group, arg2, arg3 = knn.normalize(group1)
     weight_train(nor_group, label1, step=0.1, ranges=10, k=5, test_num=9)
