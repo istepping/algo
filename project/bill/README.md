@@ -34,3 +34,8 @@ F 常用种类占比 [0,1] 0.8 -1
 # 开发记录
 2018.12.9 测试数据的正则化，系数的赋值
 * 矩阵乘法[](https://blog.csdn.net/cqk0100/article/details/76221749)
+1. 数组和矩阵乘法
+* array: *和multiply对应元素相乘,dot(d,f)，点乘
+* matrix:* 矩阵乘积,multiply 对应元素相乘
+2. 时间操作
+[](https://www.cnblogs.com/liuq/p/6211005.html)
