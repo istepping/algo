@@ -47,7 +47,7 @@ def save_weight(weight):
 #############################
 def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=0.3):
     k = k  # k值
-    weight = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]  # 系数数组
+    weight = [1, 1, 1, 1, 1, 1]  # 系数数组
     step = step  # 步长
     ranges = ranges  # 训练范围
     right_count = 0.0  # 正确的数量
@@ -61,6 +61,7 @@ def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=0.3):
     time = datetime.datetime.now()
     print("进度:%f" % (finish_num / total_num))
     print(test_num)
+    during = 0.0
     for A in range(ranges):
         weight[0] = round(0.1 + A * step, 1)
         for B in range(ranges):
@@ -93,15 +94,19 @@ def weight_train(group, label, step=0.1, ranges=10, k=3, test_num=0.3):
                             finish_num += 1.0  # 进度加一
                             right_count = 0.0  # 归位
                     print("进度:%f" % (finish_num / total_num))
-                    now = datetime.datetime.now()
-                    during = (now - time).seconds
-                    time = now
-                    print(during)
-                    during = int(during * (total_num - finish_num) / finish_num)  # 还需要得时间戳
-                    time_month = trans_time(during // (60 * 60 * 24 * 30))
-                    time_day = trans_time(during // (60 * 60 * 24) % 30)
-                    time_hours = trans_time(during // (60 * 60) % 24)
-                    time_minute = trans_time(during // 60 % 60)
+                    # 时间处理
+                    if D == 0:
+                        now = datetime.datetime.now()
+                        during = (now - time).seconds
+                        during = during / finish_num
+                        print("平均时间", during)
+
+                    next_during = int(during * (total_num - finish_num))  # 还需要得时间戳
+                    print(next_during)
+                    time_month = trans_time(next_during // (60 * 60 * 24 * 30))
+                    time_day = trans_time(next_during // (60 * 60 * 24) % 30)
+                    time_hours = trans_time(next_during // (60 * 60) % 24)
+                    time_minute = trans_time(next_during // 60 % 60)
                     print("剩余时间:{0}月{1}天{2}小时{3}分钟".format(time_month, time_day, time_hours, time_minute))
     print("正确率", max_right)
     print("结果", max_right_weight)
@@ -117,5 +122,5 @@ def trans_time(t):
 
 if __name__ == "__main__":
     group1, label1 = read_file(r'data_bill.txt')
-    weight_train(group1, label1, step=0.1, ranges=5, k=20, test_num=0.0005)
+    weight_train(group1, label1, step=1, ranges=4, k=20, test_num=0.001)
     # print(predict(np.array([0.9, 0.34, 0.22, 0.2, 0.2, 0.2])))
