@@ -22,7 +22,7 @@ def predict(test):
     group, label = read_file(r'data_bill.txt')
     # 加载系数
     test = test * np.loadtxt("max_right_weight.txt")
-    return knn.classify_knn0(group, label, test, 20)
+    return knn.classify_knn1(group, label, test, 20)
 
 
 def save_weight(weight):
@@ -121,6 +121,6 @@ def trans_time(t):
 
 
 if __name__ == "__main__":
-    group1, label1 = read_file(r'data_bill.txt')
-    weight_train(group1, label1, step=1, ranges=4, k=20, test_num=0.001)
-    # print(predict(np.array([0.9, 0.34, 0.22, 0.2, 0.2, 0.2])))
+    # group1, label1 = read_file(r'data_bill.txt')
+    # weight_train(group1, label1, step=1, ranges=4, k=20, test_num=0.001)
+    print(predict(np.array([0.9, 0.34, 0.22, 0.2, 0.2, 0.2])))
