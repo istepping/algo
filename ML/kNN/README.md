@@ -14,6 +14,8 @@
 2. 数据的归一化
 * 不同特征值的权重
 * 映射方式:newValue=(oldValue-min)/(max-min)
+# 手写识别
+训练集:二进制图片
 # 相关
 1. sorted()
 * sort,list成员函数

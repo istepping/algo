@@ -19,9 +19,9 @@ def read_file(file):
 # @note 预测器
 #############################
 def predict(test):
-    group, label = read_file(r'data_bill.txt')
-    # 加载系数
-    test = test * np.loadtxt("max_right_weight.txt")
+    group, label = read_file(r'data_bill2.txt')
+    # 加载系数，归一化处理
+    # test = test * np.loadtxt("max_right_weight.txt")
     return knn.classify_knn1(group, label, test, 20)
 
 
