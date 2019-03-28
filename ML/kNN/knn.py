@@ -16,8 +16,7 @@ def classify_knn2(data_set, label, test_data, k):
     for i in range(k):
         vote_label = label[sorted_distances[i]]
         # print("权重=", gaussian(i))
-        class_count[vote_label] = class_count.get(vote_label, 0) + 3 / (
-                    i + 1)  # gaussian(distances[sorted_distances[i]])
+        class_count[vote_label] = class_count.get(vote_label, 0) + gaussian(distances[sorted_distances[i]], a=50)
     sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
     return sorted_class_count[0][0]
 

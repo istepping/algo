@@ -138,7 +138,7 @@ def correct_train(test_radio=0.3, k=20):
             right_count += 1
     result = right_count / test_num
     # print(result)
-    return result
+    return round(result, 4)
 
 
 def k_train():
@@ -156,7 +156,7 @@ def k_train():
 
 
 def k_train2():
-    top = 200
+    top = 110
     for i in range(top):
         result = correct_train(k=i + 1, test_radio=0.3)
         print("K=", i + 1, end=",")
