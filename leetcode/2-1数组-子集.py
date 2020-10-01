@@ -1,6 +1,7 @@
 """
 使用二进制和位运算:子集有2^n,0-2^n-1的数字使用二进制表示,1代表存在，0代表不存在.
 """
+from typing import List
 
 
 class Solution:
