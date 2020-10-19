@@ -50,6 +50,10 @@ def preorderNoRe(root):
         root = stack.pop(-1)
 
 
+
+
+
+
 # 中序递归
 def inorderRe(root):
     if root is None:
