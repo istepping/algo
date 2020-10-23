@@ -27,6 +27,7 @@ def init_tree():
     e.right = f
     return a
 
+
 # 前序递归
 def preorderRe(root):
     # 退出递归
@@ -48,10 +49,6 @@ def preorderNoRe(root):
         if root.left is not None:
             stack.append(root.left)
         root = stack.pop(-1)
-
-
-
-
 
 
 # 中序递归
@@ -101,8 +98,28 @@ def postorderNoRe(root):
         print(stack2.pop().val)
 
 
-# main
+# DFS深度优先搜索，DFS对于树来说就是前序中序后序遍历，树是图的特殊形式
+# BFS广度优先搜索, 对于树来说就是层次遍历
+def bfs(root):
+    result = []
+    if root is None:
+        return result
+    level = [root]
+    while len(level) > 0:
+        temp = []
+        for n in level:
+            result.append(n.val)
+            if n.left is not None:
+                temp.append(n.left)
+            if n.right is not None:
+                temp.append(n.right)
+        level = temp
+    return result
+    # main
+
+
 if __name__ == "__main__":
     node = init_tree()
     postorderNoRe(node)
     postorderRe(node)
+    print(bfs(node))
