@@ -23,7 +23,7 @@ while d_2norm > 10 ** -5:
     d_2norm = np.dot(d.T, d).sum() ** 0.5
     step += 1
     norm_list.append(d_2norm)
-
+print("newton method\n", x)
 plt.plot([i for i in range(0, step + 1)], norm_list, "b-", label="newton")
 plt.title("newton")
 plt.xlabel("step")

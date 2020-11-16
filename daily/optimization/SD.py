@@ -21,7 +21,7 @@ while np.linalg.norm(A.dot(x) - b) > 10 ** -5:
     x = x - a * r
     step2 += 1
     Y.append(np.linalg.norm(A.dot(x) - b))
-
+print(x)
 # visual
 plt.plot([i for i in range(1, step2 + 1)], Y, "r-", label="SD")
 plt.title("SD")
