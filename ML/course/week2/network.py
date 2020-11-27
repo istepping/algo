@@ -10,14 +10,14 @@ class Network(object):
         self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]  # (15,784),(10,15)
 
     def feedforward(self, a):
-        print("forward")
+        # print("forward")
         count = 0
         for b, w in zip(self.biases, self.weights):
             if count == 1:
-                print("soft")
+                # print("soft")
                 a = softmax(np.dot(w, a) + b)
             else:
-                print("relu")
+                # print("relu")
                 a = relu(np.dot(w, a) + b)
             count += 1
 
