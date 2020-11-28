@@ -11,3 +11,6 @@
 [x1,x2]=>[x1,x2,x1^2,x2^2,x1x2] 多项式空间映射
 [多项式回归](https://blog.csdn.net/Paul_1i/article/details/104020197?)
 [椭圆转换关系](https://blog.csdn.net/ningyaliuhebei/article/details/46327681)
+3. 第三次作业
+如何通过拉格朗日函数
+差异在最后一步，>=0 同时小于c
