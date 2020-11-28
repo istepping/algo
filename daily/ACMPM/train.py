@@ -4,19 +4,20 @@ import matplotlib.pyplot as plt
 from BPNet import BPNet
 import numpy as np
 
-batch_size = 10
-learning_rate = 0.9
-weight_decay = 0.01
-epochs = 300
-output = 3
+learning_rate = 0.05
+weight_decay = 0.0001
+epochs = 1000
+in_features = 4
+hidden_features = 10
+out_features = 5
 # 加载数据
-data = torch.from_numpy(np.loadtxt(r"data.txt", delimiter="  ", dtype=np.float32))
-X = data[:, 0:3]
-Y = data[:, 3:]
+data = torch.from_numpy(np.loadtxt(r"data.txt", delimiter="    ", dtype=np.float32))
+X = data[:, 0:4]
+Y = data[:, 4:]
 print(X)
 print(Y)
 # 训练模型
-model = BPNet(3, 5, 4)
+model = BPNet(in_features, hidden_features, out_features)
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 model.train()
@@ -32,11 +33,8 @@ for i in range(epochs):
     if loss < mini_loss:
         torch.save(model.state_dict(), "model.pth")
     mini_loss = loss
-
-model.load_state_dict(torch.load("model.pth"))
-
-Y = model(X)
-print(Y)
-# 预测结果
+print(mini_loss)
 plt.plot(range(epochs), loss_value, '-')
+plt.xlabel("epoch")
+plt.ylabel("loss")
 plt.show()

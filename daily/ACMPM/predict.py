@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from BPNet import BPNet
 import numpy as np
 
-model = BPNet(3, 5, 4)
+model = BPNet(4, 8, 5)
 model.load_state_dict(torch.load("model.pth"))
 
 X1 = torch.from_numpy(np.loadtxt(r"telangpu.txt", delimiter="  ", dtype=np.float32))

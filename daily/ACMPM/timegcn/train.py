@@ -12,9 +12,11 @@ epochs = 2000  # 训练周期
 # 生成图结构-> 加载数据-> 训练模型-> 保存模型
 # 加载特征数据和生成图结构
 # 加载数据
-data = torch.from_numpy(np.loadtxt(r"data.txt", delimiter="  ", dtype=np.float32))
-X = data[:, 0:3]
-Y = data[:, 3:]
+data = np.loadtxt(r"data.txt", delimiter="  ", dtype=np.float32)
+X_ = data[:, 0:3]
+Y = torch.from_numpy(data[:, 3:])
+X = torch.from_numpy(
+    np.insert(X_, -1, np.loadtxt(r"baideng.txt", delimiter="  ", dtype=np.float32), axis=0))  # 预测不同的人使用不同数据
 print(Y)
 # 生成图结构
 N = X.shape[0]  # 图节点数
@@ -40,7 +42,7 @@ mini_loss = 100
 for i in range(epochs):
     optimizer.zero_grad()
     output = model(X, adj)
-    loss = criterion(output, Y)
+    loss = criterion(output[0:Y.shape[0], :], Y)
     loss_value.append(loss)
     loss.backward()
     optimizer.step()
@@ -49,8 +51,12 @@ for i in range(epochs):
     mini_loss = loss
 print(loss_value[-1])
 model.load_state_dict(torch.load("TimeGCN.pth"))
-Y = model(X, adj)
-print(Y)
-# 预测结果
-plt.plot(range(epochs), loss_value, '-')
-plt.show()
+pre_y = model(X, adj)
+print(pre_y)
+print(pre_y[Y.shape[0]:])
+# 可视化结果
+# plt.plot(range(epochs), loss_value, '-')
+# plt.xlabel("epoch")
+# plt.ylabel("loss")
+# plt.show()
+# plt.plot(range())
