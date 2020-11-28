@@ -60,7 +60,6 @@ class Network(object):
     def feedforward(self, a):
         for b, w in zip(self.biases, self.weights):
             a = relu(np.dot(w, a) + b)
-        a = softmax(a)
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
