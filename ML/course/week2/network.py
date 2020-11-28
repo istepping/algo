@@ -16,15 +16,17 @@ class Network(object):
             if count == 1:
                 # print("soft")
                 a = softmax(np.dot(w, a) + b)
+                # print(a)
             else:
                 # print("relu")
                 a = relu(np.dot(w, a) + b)
+                # print(a)
             count += 1
-
         return a
 
     # mini-batch stochastic gradient descent
     def SGD(self, training_data, epochs, mini_batch_size, eta, test_data=None):
+        accuracy = []
         if test_data: n_test = len(test_data)
         n = len(training_data)
         for j in range(epochs):
@@ -33,9 +35,12 @@ class Network(object):
             mini_batches = [training_data[k:k + mini_batch_size] for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
+
             if test_data:
+                predict = self.evaluate(test_data)
                 print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test))
+                    j, predict, n_test))
+                accuracy.append(predict / n_test)
             else:
                 print("Epoch {0} complete".format(j))
 
@@ -46,8 +51,12 @@ class Network(object):
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]  # 偏导数
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]  # 偏导数
-        self.weights = [w - (eta / len(mini_batch)) * nw for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b - (eta / len(mini_batch)) * nb for b, nb in zip(self.biases, nabla_b)]
+        # print("更新")
+        # print(self.weights)
+        self.weights = [w - eta * nw for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b - eta * nb for b, nb in zip(self.biases, nabla_b)]
+        # print("更新后")
+        # print(self.weights)
 
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
@@ -71,15 +80,11 @@ class Network(object):
             count += 1
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * relu_prime(zs[-1])
+        # 最后一层求导
+        delta = self.cost_derivative(activations[-1], y)  # * relu_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-        # Note that the variable l in the loop below is used a little
-        # differently to the notation in Chapter 2 of the book.  Here,
-        # l = 1 means the last layer of neurons, l = 2 is the
-        # second-last layer, and so on.  It's a renumbering of the
-        # scheme in the book, used here to take advantage of the fact
-        # that Python can use negative indices in lists.
+        # 前几层求导
         for l in range(2, self.num_layers):
             z = zs[-l]
             sp = relu_prime(z)
@@ -89,10 +94,11 @@ class Network(object):
         return nabla_b, nabla_w
 
     def evaluate(self, test_data):
-        """Return the number of test inputs for which the neural
-        network outputs the correct result. Note that the neural
-        network's output is assumed to be the index of whichever
-        neuron in the final layer has the highest activation."""
+        x, y = test_data[0]
+        # print(y)
+        # print(self.weights)
+        # print(self.biases)
+        # print(self.feedforward(x))
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
@@ -113,7 +119,7 @@ def sigmoid_prime(z):
 
 
 def relu(z):
-    return (np.abs(z) + z) / 2
+    return np.maximum(0, z)
 
 
 def relu_prime(z):
@@ -124,10 +130,4 @@ def relu_prime(z):
 
 
 def softmax(x):
-    x_row_max = x.max(axis=-1)
-    x_row_max = x_row_max.reshape(list(x.shape)[:-1] + [1])
-    x = x - x_row_max
-    x_exp = np.exp(x)
-    x_exp_row_sum = x_exp.sum(axis=-1).reshape(list(x.shape)[:-1] + [1])
-    result = x_exp / x_exp_row_sum
-    return result
+    return np.exp(x) / np.sum(np.exp(x), axis=0, keepdims=True)

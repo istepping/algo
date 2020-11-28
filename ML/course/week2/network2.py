@@ -58,8 +58,13 @@ class Network(object):
                         for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
     def feedforward(self, a):
+        count = 0
         for b, w in zip(self.biases, self.weights):
-            a = relu(np.dot(w, a) + b)
+            if count == 1:
+                a = softmax(np.dot(w, a) + b)
+            else:
+                a = relu(np.dot(w, a) + b)
+            count += 1
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
