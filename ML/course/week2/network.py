@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Network(object):
@@ -43,6 +44,8 @@ class Network(object):
                 accuracy.append(predict / n_test)
             else:
                 print("Epoch {0} complete".format(j))
+        plt.plot(range(epochs), accuracy, "-")
+        plt.show()
 
     def update_mini_batch(self, mini_batch, eta):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
